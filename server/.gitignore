@@ -1,2 +1,3 @@
 node_modules
-selint.config.js
+eslint.config.js
+.env
