@@ -3,12 +3,19 @@ import cors from "cors"
 import userRouter from "./routes/user"
 import cookieParser from "cookie-parser"
 import dotenv from "dotenv"
+import { connectDB } from "./db/db"
 
 dotenv.config({
     path: './.env'
 })
 
 const app = express()
+
+async function connect() {
+    await connectDB()
+}
+
+connect()
 
 app.use(cors({
     origin: process.env.CORS_ORIGIN,

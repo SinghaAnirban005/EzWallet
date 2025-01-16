@@ -1,10 +1,9 @@
 import { User } from "../models/user"
 import jwt from "jsonwebtoken"
-import mongoose from "mongoose"
 import bcrypt from "bcrypt"
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 
-const registerUser = async (req: Request, res: Response) => {
+const registerUser = async (req: Request, res: Response, next: NextFunction) => {
 
     const {fullName, email, username, password } = req.body
 
@@ -26,6 +25,7 @@ const registerUser = async (req: Request, res: Response) => {
                 message: "User with email or username already exists"
             }
         )
+        return;
     }
 
     const user = await User.create({
@@ -46,13 +46,14 @@ const registerUser = async (req: Request, res: Response) => {
         return
     }
 
-    return res.status(201).json(
+    res.status(201).json(
     {
         message: "Registered succesfully",
         user: createdUser
     }
     )
 
+    return;
 }
 
 const login = async(req: Request, res: Response) => {
@@ -95,7 +96,7 @@ const login = async(req: Request, res: Response) => {
                     username: user.username,
                     fullName: user.fullName
                 },
-                process.env.ACCESS_TOKEN_SECRET,
+                process.env.ACCESS_TOKEN_SECRET as string,
                 {
                     expiresIn: process.env.ACCESS_TOKEN_EXPIRY
                 }
@@ -106,7 +107,7 @@ const login = async(req: Request, res: Response) => {
                 _id: user._id,
                 
             },
-            process.env.REFRESH_TOKEN_SECRET,
+            process.env.REFRESH_TOKEN_SECRET as string,
             {
                 expiresIn: process.env.REFRESH_TOKEN_EXPIRY
             }
@@ -123,14 +124,15 @@ const login = async(req: Request, res: Response) => {
             secure: true,
         }
 
-        return res
-                .status(200)
-                .cookie("accessToken", accessToken, options)
-                .cookie("refreshToken", refreshToken, options)
-                .json({
-                    user: loggedInUser,
-                    message: 'Logged in successfully'
-                })
+        res
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json({
+                user: loggedInUser,
+                message: 'Logged in successfully'
+            })
+        return;
 
     } catch (error) {
         res.status(500).json(
@@ -138,6 +140,7 @@ const login = async(req: Request, res: Response) => {
                 message: "Failed to login"
             }
         )
+        return;
     }
 }
 
@@ -160,13 +163,14 @@ const logoutUser = async(req: Request, res: Response) => {
         secure: true
     }
 
-    return res
+    res
     .status(200)
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
     .json({
         message: "User logged out"
     })
+    return;
 }
 
 export {
