@@ -6,7 +6,12 @@ const accountSchema = new Schema({
     },
     owner: {
         type: mongoose.Types.ObjectId
+    },
+    currency: {
+        type: String
     }
+},{
+    timestamps: true
 }) 
 
 export const Account = mongoose.model('Account', accountSchema)
