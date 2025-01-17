@@ -5,7 +5,8 @@ const accountSchema = new Schema({
         type: Number,
     },
     owner: {
-        type: mongoose.Types.ObjectId
+        type: mongoose.Types.ObjectId,
+        ref: 'User'
     },
     currency: {
         type: String

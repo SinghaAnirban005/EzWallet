@@ -3,11 +3,11 @@ import mongoose, {Schema} from "mongoose";
 const transactionSchema = new Schema({
     sender: {
         type: mongoose.Types.ObjectId,
-        required: true,
+        ref: 'User',
     },
     receiver: {
         type: mongoose.Types.ObjectId,
-        required: true,
+        ref: 'User',
     },
     amount: {
         type: Number,
