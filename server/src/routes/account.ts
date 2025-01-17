@@ -8,7 +8,7 @@ import {
 
 const router = Router()
 
-router.route('/balance').post(verifyJWT, getBalance)
+router.route('/balance').get(verifyJWT, getBalance)
 router.route('/top-up').post(verifyJWT, topUP)
 router.route('/sendMoney').post(verifyJWT, transferMoney)
 

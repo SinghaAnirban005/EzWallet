@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import userRouter from "./routes/user"
 import accountRouter from "./routes/account"
+import transactionRouter from "./routes/transactions"
 import cookieParser from "cookie-parser"
 import dotenv from "dotenv"
 import { connectDB } from "./db/db"
@@ -30,6 +31,7 @@ app.use(cookieParser())
 
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/account', accountRouter)
+app.use('/api/v1/tsc', transactionRouter)
 
 app.listen(3000)
 
