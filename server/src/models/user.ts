@@ -1,4 +1,4 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, {mongo, Schema} from "mongoose";
 import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
 
@@ -27,6 +27,10 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: [true, 'Password is required']
+    },
+    account: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Account'
     },
     refreshToken: {
         type: String

@@ -1,4 +1,5 @@
 import { User } from "../models/user"
+import { Account } from "../models/account"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { NextFunction, Request, Response } from "express"
@@ -29,13 +30,22 @@ const registerUser = async (req: Request, res: Response, next: NextFunction) => 
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
-
     const user = await User.create({
         fullName,
         email, 
         password: hashedPassword,
-        username: username
+        username: username,
     })
+
+    const userWallet = await Account.create({
+        balance: Math.floor(Math.random() * 1000),
+        owner: user._id,
+        currency: 'rupee'
+    })
+    //@ts-ignore
+    user.account = userWallet
+
+    await user.save({validateBeforeSave: false})
 
     const createdUser = await User.findById(user._id).select(
         "-password -refreshToken"

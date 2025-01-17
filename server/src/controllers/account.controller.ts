@@ -9,7 +9,7 @@ const getBalance = async(req: Request, res: Response) => {
 
         if(!userId){
             res.status(400).json({
-                message: "No vlaid userId"
+                message: "No valid userId"
             })
             return;
         }
@@ -25,12 +25,13 @@ const getBalance = async(req: Request, res: Response) => {
         }
 
         res.status(200).json({
-            message: "Fetched account balance"
+            message: "Fetched account balance",
+            balance: balance
         })
         return;
     } catch (error) {
         res.status(500).json({
-            message: "Failed to get account details :: " + error
+            message: "Failed to get account details ",
         })
         return;
     }
@@ -72,23 +73,16 @@ const topUP = async(req: Request, res: Response) => {
 }
 
 const transferMoney = async(req: Request, res: Response) => {
-    try {
-        const { senderId, receiverId, amount } = req.body()
-
-        if(!senderId || receiverId || !amount || amount <= 0){
+        const { senderId, receiverId, amount } = req.body
+        if(!senderId || !receiverId || !amount || amount <= 0){
             res.status(400).json({
                 message: "Enter valid fields"
             })
             return;
         }
-
-        const senderAccount = await Account.findById({
-            owner: senderId
-        })
-        const receiverAccount = await Account.findById({
-            owner: senderId
-        })
         
+        const senderAccount = await Account.findById(senderId)
+        const receiverAccount = await Account.findById(receiverId)
         if(!senderAccount || !receiverAccount){
             res.status(400).json({
                 message: "Account does not exist"
@@ -111,6 +105,8 @@ const transferMoney = async(req: Request, res: Response) => {
             session.startTransaction()
 
             try {
+                const parsedSenderId = new mongoose.Types.ObjectId(senderId);
+const parsedReceiverId = new mongoose.Types.ObjectId(receiverId);
                 //@ts-ignore
                 senderAccount.balance -= amount;
                 receiverAccount.balance += amount;
@@ -118,11 +114,8 @@ const transferMoney = async(req: Request, res: Response) => {
                 await senderAccount.save({session})
                 await receiverAccount.save({session})
 
-                const updatedSenderWallet = await Account.findOne({ owner: senderId }).session(session);
-                const updatedReceiverWallet = await Account.findOne({ owner: receiverId }).session(session);
-
                 //@ts-ignore
-                const finalTotalBalance = updatedSenderWallet.balance + updatedReceiverWallet.balance;
+                const finalTotalBalance = senderAccount.balance + receiverAccount.balance;
 
                 if(initialTotalBalance != finalTotalBalance){
                     res.status(400).json({
@@ -142,6 +135,7 @@ const transferMoney = async(req: Request, res: Response) => {
                     res.status(400).json({
                         message: "Transaction invalid"
                     })
+                    return;
                 }
 
                 await session.commitTransaction()
@@ -162,12 +156,6 @@ const transferMoney = async(req: Request, res: Response) => {
             })
             return;
         }
-    } catch (error) {
-        res.status(500).json({
-            message: ':: Internal server error ::'
-        })
-        return;
-    }
 }
 
 export {
