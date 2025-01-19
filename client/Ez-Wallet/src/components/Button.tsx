@@ -2,12 +2,13 @@ import React from 'react';
 
 type ButtonProps = {
   label: string;
-  onClick: () => void;
+  className?: string
+  onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
   variant?: 'primary' | 'secondary';
 };
 
-const Button: React.FC<ButtonProps> = ({ label, onClick, type = 'button', variant = 'primary' }) => {
+const Button: React.FC<ButtonProps> = ({ label, onClick, type = 'button', variant = 'primary', className }) => {
   const baseClasses = 'px-4 py-2 rounded font-semibold';
   const variantClasses =
     variant === 'primary'
@@ -18,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({ label, onClick, type = 'button', varian
     <button
       type={type}
       onClick={onClick}
-      className={`${baseClasses} ${variantClasses}`}
+      className={`${baseClasses} ${variantClasses} ${className}`}
     >
       {label}
     </button>
