@@ -210,6 +210,7 @@ const getUserData = async(req: Request, res: Response) => {
             message: 'Fetched user Data',
             data: userData
         })
+        return;
     } catch (error) {
         res.status(500).json(
             {
