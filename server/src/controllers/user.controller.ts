@@ -185,8 +185,44 @@ const logoutUser = async(req: Request, res: Response) => {
     return;
 }
 
+const getUserData = async(req: Request, res: Response) => {
+    try {
+        //@ts-expect-error
+        const userId = req.user._id
+
+        if(!userId){
+            res.status(400).json({
+                message: "Invalid user Id"
+            })
+            return;
+        }
+
+        const userData = await User.findById(userId).select('-refreshToken -password').populate('account')
+
+        if(!userData){
+            res.status(400).json({
+                message: "Invalid request"
+            })
+            return;
+        }
+
+        res.status(200).json({
+            message: 'Fetched user Data',
+            data: userData
+        })
+    } catch (error) {
+        res.status(500).json(
+            {
+                message: "Failed to fetch user data"
+            }
+        )
+        return;
+    }
+}
+
 export {
     registerUser,
     login,
-    logoutUser
+    logoutUser,
+    getUserData
 }
