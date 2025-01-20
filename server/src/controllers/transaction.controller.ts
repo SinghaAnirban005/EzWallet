@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const getTransactions = async(req: Request, res: Response) => {
 try {
-    const { currentUserAccId } = req.body
+    const { currentUserAccId } = req.query
 
     const transactions = await Transactions.find({
         $or: [
@@ -15,7 +15,7 @@ try {
                 receiver: currentUserAccId
             }
         ]
-    })
+    }).populate("sender receiver")
 
     if(!transactions){
         res.status(400).json({
