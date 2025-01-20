@@ -23,10 +23,10 @@ const walletSlice = createSlice({
                 state.userTransactions = action.payload
             }
         },
-        logout: (state, action) => {
+        logout: (state) => {
             state.status = false,
             state.userData = {},
-            state.userTransactions = {}
+            state.userTransactions = []
         }
     }
 })

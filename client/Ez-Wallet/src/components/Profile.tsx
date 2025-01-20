@@ -3,13 +3,34 @@ import { User, Mail, Camera } from 'lucide-react';
 import { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../store/Slice';
 
 const Profile = () => {
 
   const userDataRef = useRef(null)
   const userData = useSelector((state: RootState) => state.userData)
+  const dispatch = useDispatch()
   //@ts-ignore
   userDataRef.current = userData
+  const navigate = useNavigate()
+
+  const handleLogout = async() => {
+    try {
+      const res = await axios.post('http://localhost:3000/api/v1/user/logout',{}, {withCredentials: true})
+      
+      if(res){
+        dispatch(logout())
+        navigate('/')
+      }
+
+      return;
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -73,6 +94,13 @@ const Profile = () => {
                   <Button 
                     className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center space-x-2"
                     label={'Edit Profile'}
+                  />
+                </div>
+                <div className="flex space-x-4">
+                  <Button 
+                    className="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                    onClick={handleLogout}
+                    label={'Logout'}
                   />
                 </div>
               </div>
