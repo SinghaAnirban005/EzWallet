@@ -1,23 +1,18 @@
 import { Request, Response } from "express"
 import { Transactions } from "../models/transactions";
+import mongoose from "mongoose";
 
 const getTransactions = async(req: Request, res: Response) => {
 try {
-    const { userId } = req.params;
-    if(!userId){
-        res.status(400).json({
-            message: "User Id is not available"
-        })
-        return;
-    }
+    const { currentUserAccId } = req.body
 
     const transactions = await Transactions.find({
         $or: [
             {
-                sender: userId
+                sender: currentUserAccId
             },
             {
-                receiver: userId
+                receiver: currentUserAccId
             }
         ]
     })
@@ -30,7 +25,8 @@ try {
     }
 
     res.status(200).json({
-        message: "Fetched all transactions"
+        message: "Fetched all transactions",
+        transactions: transactions
     })
     return;
 } catch (error) {

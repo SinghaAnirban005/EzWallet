@@ -5,7 +5,8 @@ import mongoose from "mongoose"
 
 const getBalance = async(req: Request, res: Response) => {
     try {
-        const { userId } = req.params
+        //@ts-ignore
+        const userId = req.user._id
 
         if(!userId){
             res.status(400).json({
