@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     status: false,
-    userData: {}
+    userData: {},
+    userTransactions: []
 }
 
 const walletSlice = createSlice({
@@ -14,16 +15,21 @@ const walletSlice = createSlice({
         },
         addUserData: (state, action) => {
             if(state.status === true){
-                console.log(action.payload)
                 state.userData = action.payload
+            }
+        },
+        addUserTransaction: (state, action) => {
+            if(state.status === true){
+                state.userTransactions = action.payload
             }
         },
         logout: (state, action) => {
             state.status = false,
-            state.userData = {}
+            state.userData = {},
+            state.userTransactions = {}
         }
     }
 })
 
-export const { login, addUserData, logout } = walletSlice.actions
+export const { login, addUserData, addUserTransaction, logout } = walletSlice.actions
 export default walletSlice.reducer

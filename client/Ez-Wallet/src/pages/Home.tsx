@@ -1,45 +1,41 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Card from '../components/Card';
 import { RootState } from '../store/store';
+import { useDispatch } from 'react-redux';
+import axios from "axios"
+import { addUserData } from '../store/Slice';
 import { Phone, Shield, Gift, Download, CreditCard, Users } from 'lucide-react';
-
-
-const styles = `
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-`;
 
 const Home = () => {
   const isLoggedIn = useSelector((state: RootState) => state.status);
+  const [error, setError] = useState('')
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const res = async() => {
+      try {
+          const userData = await axios.get('http://localhost:3000/api/v1/user/user-data', {
+            withCredentials: true
+        })
+        
+        if(!userData) {
+            setError('Could not get user data')
+            return;
+        }
+        //@ts-ignore
+        dispatch(addUserData(userData?.data?.data))
+    } catch (error) {
+        //@ts-ignore
+        setError(error?.message)
+        return;
+    }}
+
+    
+    if(isLoggedIn){
+      res()
+    }
+ }, [])
 
   const LoggedInView = () => (
     <div className="flex flex-col min-h-screen">

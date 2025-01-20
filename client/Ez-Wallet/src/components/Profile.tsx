@@ -1,46 +1,20 @@
 import Button from './Button';
 import { User, Mail, Camera } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { addUserData } from '../store/Slice';
+import { useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 
 const Profile = () => {
 
   const userDataRef = useRef(null)
-  const dispatch = useDispatch()
   const userData = useSelector((state: RootState) => state.userData)
-  const [error, setError] = useState('')
-
-    useEffect(() => {
-        ;(async() => {
-            try {
-                const userData = await axios.get('http://localhost:3000/api/v1/user/user-data', {
-                    withCredentials: true
-                })
-                
-                if(!userData) {
-                    setError('Could not get user data')
-                    return;
-                }
-                //@ts-ignore
-                dispatch(addUserData(userData?.data?.data))
-            } catch (error) {
-                //@ts-ignore
-                setError(error?.message)
-                return;
-            }
-        })()
-    }, [])
-    //@ts-ignore
-    userDataRef.current = userData
+  //@ts-ignore
+  userDataRef.current = userData
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <main className="flex-grow p-6">
         <div className="max-w-3xl mx-auto">
-        {error && <p>{error}</p>}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
             <p className="text-gray-600">Manage your personal information</p>
