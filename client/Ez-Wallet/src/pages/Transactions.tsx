@@ -54,7 +54,6 @@ const Transactions = () => {
   //@ts-ignore
   transactionsRef.current = transactionsData
 
-  // Status badge component
   const StatusBadge = ({status}) => {
     const statusConfig = {
       success: { color: 'bg-green-100 text-green-700', icon: <CheckCircle2 className="w-4 h-4" /> },
@@ -74,7 +73,6 @@ const Transactions = () => {
     <div className="flex flex-col min-h-screen bg-gray-50">
       <main className="flex-grow p-6">
         <div className="max-w-6xl mx-auto space-y-6">
-          {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Transactions</h1>
@@ -86,10 +84,8 @@ const Transactions = () => {
             </button>
           </div>
 
-          {/* Filters and Search */}
           <div className="bg-white rounded-xl shadow-sm p-4">
             <div className="flex flex-col md:flex-row gap-4">
-              {/* Search */}
               <div className="flex-grow">
                 <div className="relative">
                   <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -103,7 +99,6 @@ const Transactions = () => {
                 </div>
               </div>
 
-              {/* Filter Buttons */}
               <div className="flex space-x-2">
                 <div className="relative">
                   <button className="flex items-center space-x-2 px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
@@ -123,7 +118,6 @@ const Transactions = () => {
               </div>
             </div>
 
-            {/* Status Filters */}
             <div className="flex space-x-2 mt-4">
               {['all', 'success', 'pending', 'failed'].map((status) => (
                 <button
@@ -141,7 +135,6 @@ const Transactions = () => {
             </div>
           </div>
 
-          {/* Transactions List */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -170,12 +163,12 @@ const Transactions = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
-                          {tx.sender?._id || 'Unknown'}
+                          {tx.sender?.owner?.username || 'Unknown'}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
-                          {tx.receiver?._id || 'Unknown'}
+                          {tx.receiver?.owner?.username || 'Unknown'}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -192,7 +185,6 @@ const Transactions = () => {
               </table>
             </div>
 
-            {/* Empty State */}
             {transactionsRef.current.length === 0 && (
               <div className="text-center py-12">
                 <p className="text-gray-500 text-lg">No transactions found</p>
