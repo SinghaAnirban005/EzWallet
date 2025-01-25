@@ -1,6 +1,5 @@
 import { Request, Response } from "express"
 import { Transactions } from "../models/transactions";
-import mongoose from "mongoose";
 
 const getTransactions = async(req: Request, res: Response) => {
 try {
@@ -15,7 +14,20 @@ try {
                 receiver: currentUserAccId
             }
         ]
-    }).populate("sender receiver")
+    }).populate({
+        path: 'sender',
+        populate: {
+            path: 'owner',
+            select: 'username',
+        },
+    })
+    .populate({
+        path: 'receiver',
+        populate: {
+            path: 'owner',
+            select: 'username',
+        },
+    });
 
     if(!transactions){
         res.status(400).json({
@@ -30,6 +42,7 @@ try {
     })
     return;
 } catch (error) {
+    console.error(error)
     res.status(500).json({
         message: 'Internal server error'
     })
