@@ -5,6 +5,7 @@ import { RootState } from '../store/store';
 import Modal from '../components/Modal';
 import axios from 'axios';
 import {updateUserBalance} from "../store/Slice"
+import { useNavigate } from 'react-router-dom';
 
 const Wallet = () => {
 
@@ -13,6 +14,7 @@ const Wallet = () => {
   const [amount, setAmount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const accId = useSelector((state: RootState) => state.userData?.account?._id)
 
   const handleAddMoney = async (e: React.FormEvent) => {
@@ -105,7 +107,7 @@ const Wallet = () => {
             </div>
             <div className="text-4xl font-bold mb-4">{walletDetails?.account.balance || 0}</div>
             <div className="flex space-x-4">
-              <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
+              <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors flex items-center space-x-2" onClick={() => navigate('/sendMoney')}>
                 <SendHorizontal className="w-4 h-4" />
                 <span>Send</span>
               </button>

@@ -10,6 +10,7 @@ import Signup from './pages/Signup.tsx'
 import Profile from './components/Profile.tsx'
 import Transactions from './pages/Transactions.tsx'
 import Wallet from './pages/Wallet.tsx'
+import SendMoneyPortal from './pages/SendMoney.tsx'
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
         path: '/account',
         element: <Wallet />
       },
+      {
+        path: '/sendMoney',
+        element: <SendMoneyPortal />
+      }
     ]
   },
 ])
