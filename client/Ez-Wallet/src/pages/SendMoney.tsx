@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Search, User, ArrowRight } from 'lucide-react';
+import { Send, Search, User } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
@@ -32,11 +32,11 @@ const SendMoneyPortal: React.FC = () => {
     }
 
     try {
-      await axios.post('/api/transfer', {
-        senderId: userData.id,
-        receiverId: selectedUser.id,
+      await axios.post('http://localhost:3000/api/v1/account/sendMoney', {
+        senderId: userData.account._id,
+        receiverId: selectedUser.account,
         amount: Number(amount)
-      });
+      }, {withCredentials: true});
       
       setMessage('Transfer successful');
       setSelectedUser(null);
@@ -60,7 +60,6 @@ const SendMoneyPortal: React.FC = () => {
             description="Select a recipient and enter amount"
           >
             <div className="space-y-4">
-              {/* Search Users */}
               <div className="flex space-x-2">
                 <div className="flex-grow">
                   <input 
@@ -80,7 +79,6 @@ const SendMoneyPortal: React.FC = () => {
                 </Button>
               </div>
 
-              {/* User Results */}
               {users.length > 0 && (
                 <div className="border rounded-lg max-h-40 overflow-y-auto">
                   {users.map((user) => (
@@ -101,7 +99,6 @@ const SendMoneyPortal: React.FC = () => {
                 </div>
               )}
 
-              {/* Selected User & Amount */}
               {selectedUser && (
                 <div className="space-y-4">
                   <div className="bg-green-50 p-3 rounded-lg flex items-center">
@@ -131,7 +128,6 @@ const SendMoneyPortal: React.FC = () => {
                 </div>
               )}
 
-              {/* Message Display */}
               {message && (
                 <div className={`
                   p-3 rounded-lg text-center 
