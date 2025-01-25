@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Send, Search, User } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
+import { updateUserTransaction } from '../store/Slice';
 
 import Button from '../components/Button';
 import Card from '../components/Card';
@@ -13,6 +14,7 @@ const SendMoneyPortal: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [amount, setAmount] = useState('');
   const [message, setMessage] = useState('');
+  const dispatch = useDispatch()
 
   const userData = useSelector((state: RootState) => state.userData);
 
@@ -37,7 +39,7 @@ const SendMoneyPortal: React.FC = () => {
         receiverId: selectedUser.account,
         amount: Number(amount)
       }, {withCredentials: true});
-      
+      dispatch(updateUserTransaction(amount))
       setMessage('Transfer successful');
       setSelectedUser(null);
       setAmount('');

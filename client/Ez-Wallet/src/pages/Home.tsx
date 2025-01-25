@@ -3,13 +3,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { useDispatch } from 'react-redux';
 import axios from "axios"
-import { addUserData } from '../store/Slice';
+import { addUserData, addUserTransaction } from '../store/Slice';
 import { Wallet, Send, Gift, Zap, CreditCard, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const isLoggedIn = useSelector((state: RootState) => state.status);
   const userData = useSelector((state: RootState) => state.userData)
+
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -25,6 +26,21 @@ const Home = () => {
           setError('Could not get user data')
           return;
         }
+
+        const userTransactions = await axios.get('http://localhost:3000/api/v1/tsc/transactions', {
+          params: {
+            currentUserAccId: userData?.data.data.account._id
+          },
+          withCredentials: true
+        })
+
+        if(!userTransactions) {
+            setError('Could not get user data')
+            return;
+        }
+
+        //@ts-ignore
+        dispatch(addUserTransaction(userTransactions?.data?.transactions))
         dispatch(addUserData(userData?.data?.data))
       } catch (error) {
         setError(error?.message)
@@ -36,6 +52,8 @@ const Home = () => {
       fetchUserData()
     }
   }, [])
+
+  const transactions = useSelector((state: RootState) => state.userTransactions)
 
   const LoggedInView = () => (
     <div className="bg-gray-50 min-h-screen">
@@ -114,19 +132,15 @@ const Home = () => {
               <h2 className="text-xl font-semibold">Recent Transactions</h2>
             </div>
             <div className="space-y-3">
-              {[
-                { name: 'John Doe', amount: '₹500', type: 'Send' },
-                { name: 'Electricity Bill', amount: '₹1,200', type: 'Payment' },
-                { name: 'Salary Credit', amount: '₹45,000', type: 'Receive' }
-              ].map((transaction, index) => (
-                <div key={index} className="flex justify-between items-center border-b pb-2 last:border-b-0">
+              {transactions?.map((transaction, index) => (
+                (index < 3 && <div key={index} className="flex justify-between items-center border-b pb-2 last:border-b-0">
                   <div>
-                    <div className="font-medium">{transaction.name}</div>
-                    <div className="text-sm text-gray-500">{transaction.type}</div>
+                    <div className="font-medium">{transaction.receiver.owner.username === userData.username ? transaction.sender.owner.username : transaction.receiver.owner.username}</div>
+                    <div className="text-sm text-gray-500">{transaction.receiver.owner.username === userData.username ? "Received" : "Sent"}</div>
                   </div>
                   <div className="font-semibold text-blue-700">{transaction.amount}</div>
-                </div>
-              ))}
+                </div>)
+              )).reverse()}
             </div>
           </div>
         </div>
@@ -146,7 +160,7 @@ const Home = () => {
               <p className="text-lg text-gray-600 mb-6">
                 Send money, pay bills, and manage your finances all in one place
               </p>
-              <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700">
+              <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700" onClick={() => navigate('/signup')}>
                 Get Started
               </button>
             </div>

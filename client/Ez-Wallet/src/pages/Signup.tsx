@@ -81,7 +81,7 @@ const Signup = () => {
             />
             {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.username?.message}</p>}
           </div>
-          <Button type='submit' label="Login" />
+          <Button type='submit' label="Register" />
         </form>
       </main>
     </div>

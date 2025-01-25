@@ -24,6 +24,12 @@ const walletSlice = createSlice({
                 state.userData.account.balance += parseInt(action.payload)
             }
         },
+        updateUserTransaction: (state, action) => {
+            if(state.status === true){
+                //@ts-ignore
+                state.userData.account.balance -= parseInt(action.payload)
+            }
+        },
         addUserTransaction: (state, action) => {
             if(state.status === true){
                 state.userTransactions = action.payload
@@ -37,5 +43,5 @@ const walletSlice = createSlice({
     }
 })
 
-export const { login, addUserData, addUserTransaction, updateUserBalance, logout } = walletSlice.actions
+export const { login, addUserData, addUserTransaction, updateUserBalance, updateUserTransaction, logout } = walletSlice.actions
 export default walletSlice.reducer
