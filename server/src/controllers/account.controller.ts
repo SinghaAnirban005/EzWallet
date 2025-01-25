@@ -76,7 +76,7 @@ const topUP = async(req: Request, res: Response) => {
 
 const transferMoney = async(req: Request, res: Response) => {
         const { senderId, receiverId, amount } = req.body
-        if(!senderId || !receiverId || !amount || amount <= 0){
+        if(!senderId || !receiverId || !amount || amount <= 0 || senderId === receiverId){
             res.status(400).json({
                 message: "Enter valid fields"
             })
@@ -108,7 +108,7 @@ const transferMoney = async(req: Request, res: Response) => {
 
             try {
                 const parsedSenderId = new mongoose.Types.ObjectId(senderId);
-const parsedReceiverId = new mongoose.Types.ObjectId(receiverId);
+                const parsedReceiverId = new mongoose.Types.ObjectId(receiverId);
                 //@ts-ignore
                 senderAccount.balance -= amount;
                 receiverAccount.balance += amount;
