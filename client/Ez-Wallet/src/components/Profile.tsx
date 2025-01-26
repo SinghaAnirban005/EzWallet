@@ -19,7 +19,7 @@ const Profile = () => {
 
   const handleLogout = async() => {
     try {
-      const res = await axios.post('http://localhost:3000/api/v1/user/logout',{}, {withCredentials: true})
+      const res = await axios.post('https://ezwallet-server.onrender.com/api/v1/user/logout',{}, {withCredentials: true})
       
       if(res){
         dispatch(logout())

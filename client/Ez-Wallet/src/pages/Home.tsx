@@ -18,7 +18,7 @@ const Home = () => {
   useEffect(() => {
     const fetchUserData = async() => {
       try {
-        const userData = await axios.get('http://localhost:3000/api/v1/user/user-data', {
+        const userData = await axios.get('https://ezwallet-server.onrender.com/api/v1/user/user-data', {
           withCredentials: true
         })
         
@@ -27,7 +27,7 @@ const Home = () => {
           return;
         }
 
-        const userTransactions = await axios.get('http://localhost:3000/api/v1/tsc/transactions', {
+        const userTransactions = await axios.get('https://ezwallet-server.onrender.com/api/v1/tsc/transactions', {
           params: {
             currentUserAccId: userData?.data.data.account._id
           },

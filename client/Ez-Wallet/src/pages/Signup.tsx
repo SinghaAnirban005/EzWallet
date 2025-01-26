@@ -17,7 +17,7 @@ const Signup = () => {
 
   const handleSignup = async(data: Object) => {
     try {
-      const res = await axios.post('http://localhost:3000/api/v1/user/signup', data)
+      const res = await axios.post('https://ezwallet-server.onrender.com/api/v1/user/signup', data)
 
       if(res){
         alert('Registration successfull')

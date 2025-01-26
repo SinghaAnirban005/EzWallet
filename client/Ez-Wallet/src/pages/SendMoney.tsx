@@ -20,7 +20,7 @@ const SendMoneyPortal: React.FC = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/v1/account/search?query=${searchQuery}`, {withCredentials: true});
+      const response = await axios.get(`https://ezwallet-server.onrender.com/api/v1/account/search?query=${searchQuery}`, {withCredentials: true});
       setUsers(response.data.user)
     } catch (error) {
       setMessage('Failed to fetch users');
@@ -34,7 +34,7 @@ const SendMoneyPortal: React.FC = () => {
     }
 
     try {
-      await axios.post('http://localhost:3000/api/v1/account/sendMoney', {
+      await axios.post('https://ezwallet-server.onrender.com/api/v1/account/sendMoney', {
         senderId: userData.account._id,
         receiverId: selectedUser.account,
         amount: Number(amount)

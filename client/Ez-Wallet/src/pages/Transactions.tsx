@@ -27,7 +27,7 @@ const Transactions = () => {
   useEffect(() => {
     const res = async() => {
       try {
-        const userTransactions = await axios.get('http://localhost:3000/api/v1/tsc/transactions', {
+        const userTransactions = await axios.get('https://ezwallet-server.onrender.com/api/v1/tsc/transactions', {
           params: {
             currentUserAccId: accId
           },

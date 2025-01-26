@@ -22,7 +22,7 @@ const Wallet = () => {
     setIsLoading(true);
     
     try {
-      const res = await axios.post('http://localhost:3000/api/v1/account/top-up', {
+      const res = await axios.post('https://ezwallet-server.onrender.com/api/v1/account/top-up', {
         amount: amount,
         accountId: accId
       }, {withCredentials: true})
