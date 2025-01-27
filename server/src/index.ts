@@ -20,7 +20,7 @@ async function connect() {
 connect()
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'https://ezwallet.onrender.com'],
     credentials: true,
 }))
 
