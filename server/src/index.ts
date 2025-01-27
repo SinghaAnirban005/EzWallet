@@ -20,7 +20,7 @@ async function connect() {
 connect()
 
 app.use(cors({
-    origin: 'https://ezwallet.onrender.com',
+    origin: 'https://ez-wallet-rouge.vercel.app',
     credentials: true,
 }))
 
