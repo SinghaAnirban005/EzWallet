@@ -26,6 +26,7 @@ const Login = () => {
       console.error(error)
       //@ts-ignore
       setErr(error?.message)
+      alert(err)
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { 
   Search, 
   Calendar,
@@ -43,7 +43,7 @@ const Transactions = () => {
   const accId = useSelector((state: RootState) => state.userData?.account?._id)
   const transactionsRef = useRef<trnsRef>(null)
   const transactionsData = useSelector((state: RootState) => state.userTransactions)
-  const [error, setError] = useState('')
+  const [err, setError] = useState('')
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -67,10 +67,10 @@ const Transactions = () => {
         console.error(error)
         //@ts-ignore
         setError(error?.message)
+        alert(err)
         return;
     }
-    }
-
+  }
     res()
 }, [])
   //@ts-ignore

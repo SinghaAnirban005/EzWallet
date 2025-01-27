@@ -47,7 +47,7 @@ const Home = () => {
   const userData = useSelector((state: RootState) => state.userData) as UserData
 
   const navigate = useNavigate()
-  const [error, setError] = useState<string | unknown>(null)
+  const [err, setError] = useState<string | unknown>(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -79,6 +79,7 @@ const Home = () => {
         dispatch(addUserData(userData?.data?.data))
       } catch (error) {
         setError(error)
+        alert(err)
         return;
       }
     }
