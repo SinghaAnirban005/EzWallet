@@ -8,9 +8,15 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../store/Slice';
 
+type UserData = {
+  username?: string,
+  fullName?: string,
+  email?: string
+}
+
 const Profile = () => {
 
-  const userDataRef = useRef(null)
+  const userDataRef = useRef<UserData | null>(null)
   const userData = useSelector((state: RootState) => state.userData)
   const dispatch = useDispatch()
   //@ts-ignore
@@ -54,7 +60,7 @@ const Profile = () => {
                   <div className="w-24 h-24 bg-white rounded-full p-1">
                     <div className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
                       <span className="text-3xl font-bold text-white">
-                        {userDataRef.current.fullName?.charAt(0) || userDataRef.current.username?.charAt(0) || '?'}
+                        {userDataRef?.current?.fullName?.charAt(0) || userDataRef?.current?.username?.charAt(0) || '?'}
                       </span>
                     </div>
                   </div>

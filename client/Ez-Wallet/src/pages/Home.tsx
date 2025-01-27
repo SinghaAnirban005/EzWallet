@@ -7,12 +7,47 @@ import { addUserData, addUserTransaction } from '../store/Slice';
 import { Wallet, Send, Gift, Zap, CreditCard, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+type UserData = {
+  fullName?: string,
+  account?: {
+    balance?: number
+  },
+  username: string
+}
+
+type UserDataReq = {
+  data: {
+    data: {
+      account: {
+        _id: string
+      }
+    }
+  }
+}
+
+type trns = {
+  amount?: number,
+  receiver?: {
+    owner?: {
+      username: string
+    }
+  },
+  sender?: {
+    owner: {
+      username: string
+    }
+  }
+}
+
+type Transaction = trns[]
+
+
 const Home = () => {
   const isLoggedIn = useSelector((state: RootState) => state.status);
-  const userData = useSelector((state: RootState) => state.userData)
+  const userData = useSelector((state: RootState) => state.userData) as UserData
 
   const navigate = useNavigate()
-  const [error, setError] = useState('')
+  const [error, setError] = useState<string | unknown>(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -20,8 +55,8 @@ const Home = () => {
       try {
         const userData = await axios.get('https://ezwallet-server.onrender.com/api/v1/user/user-data', {
           withCredentials: true
-        })
-        
+        }) as UserDataReq
+
         if(!userData) {
           setError('Could not get user data')
           return;
@@ -29,7 +64,7 @@ const Home = () => {
 
         const userTransactions = await axios.get('https://ezwallet-server.onrender.com/api/v1/tsc/transactions', {
           params: {
-            currentUserAccId: userData?.data.data.account._id
+            currentUserAccId: userData?.data?.data?.account._id
           },
           withCredentials: true
         })
@@ -43,7 +78,7 @@ const Home = () => {
         dispatch(addUserTransaction(userTransactions?.data?.transactions))
         dispatch(addUserData(userData?.data?.data))
       } catch (error) {
-        setError(error?.message)
+        setError(error)
         return;
       }
     }
@@ -53,7 +88,7 @@ const Home = () => {
     }
   }, [])
 
-  const transactions = useSelector((state: RootState) => state.userTransactions)
+  const transactions = useSelector((state: RootState) => state.userTransactions) as Transaction
 
   const LoggedInView = () => (
     <div className="bg-gray-50 min-h-screen">
@@ -135,8 +170,8 @@ const Home = () => {
               {transactions?.map((transaction, index) => (
                 (index < 3 && <div key={index} className="flex justify-between items-center border-b pb-2 last:border-b-0">
                   <div>
-                    <div className="font-medium">{transaction.receiver.owner.username === userData.username ? transaction.sender.owner.username : transaction.receiver.owner.username}</div>
-                    <div className="text-sm text-gray-500">{transaction.receiver.owner.username === userData.username ? "Received" : "Sent"}</div>
+                    <div className="font-medium">{transaction?.receiver?.owner?.username === userData.username ? transaction?.sender?.owner?.username : transaction?.receiver?.owner?.username}</div>
+                    <div className="text-sm text-gray-500">{transaction?.receiver?.owner?.username === userData.username ? "Received" : "Sent"}</div>
                   </div>
                   <div className="font-semibold text-blue-700">{transaction.amount}</div>
                 </div>)

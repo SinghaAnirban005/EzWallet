@@ -7,14 +7,21 @@ import axios from 'axios';
 import {updateUserBalance} from "../store/Slice"
 import { useNavigate } from 'react-router-dom';
 
+type wallet = {
+  account: {
+    balance: number
+  }
+}
+
 const Wallet = () => {
 
-  const walletDetails = useSelector((state: RootState) => state.userData)
+  const walletDetails = useSelector((state: RootState) => state.userData) as wallet
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [amount, setAmount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  //@ts-ignore
   const accId = useSelector((state: RootState) => state.userData?.account?._id)
 
   const handleAddMoney = async (e: React.FormEvent) => {
@@ -74,7 +81,7 @@ const Wallet = () => {
                   type="number"
                   id="amount"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAmount(Number(e.target.value))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                   placeholder="Enter amount"
                   min="1"
@@ -105,7 +112,7 @@ const Wallet = () => {
               <WalletIcon className="w-6 h-6" />
               <span className="text-sm opacity-90">Available Balance</span>
             </div>
-            <div className="text-4xl font-bold mb-4">{walletDetails?.account.balance || 0}</div>
+            <div className="text-4xl font-bold mb-4">{walletDetails?.account?.balance || 0}</div>
             <div className="flex space-x-4">
               <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors flex items-center space-x-2" onClick={() => navigate('/sendMoney')}>
                 <SendHorizontal className="w-4 h-4" />

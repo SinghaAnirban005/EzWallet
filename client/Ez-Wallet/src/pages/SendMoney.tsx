@@ -8,20 +8,40 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import { RootState } from '../store/store';
 
+type UserData = {
+  account: {
+    _id: string,
+  }
+}
+
+type sUserTps = {
+  account: number,
+  username: string,
+  email: string
+}
+
+type Users = {
+  username: string,
+  email: string
+}
+
+type UsersArray = Users[]
+
 const SendMoneyPortal: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [users, setUsers] = useState<UsersArray>([]);
+  const [selectedUser, setSelectedUser] = useState<sUserTps | null>(null);
   const [amount, setAmount] = useState('');
   const [message, setMessage] = useState('');
   const dispatch = useDispatch()
 
-  const userData = useSelector((state: RootState) => state.userData);
+  const userData = useSelector((state: RootState) => state.userData) as UserData;
 
   const handleSearch = async () => {
     try {
       const response = await axios.get(`https://ezwallet-server.onrender.com/api/v1/account/search?query=${searchQuery}`, {withCredentials: true});
-      setUsers(response.data.user)
+      //@ts-ignore
+      setUsers(response?.data?.user)
     } catch (error) {
       setMessage('Failed to fetch users');
     }
@@ -35,8 +55,8 @@ const SendMoneyPortal: React.FC = () => {
 
     try {
       await axios.post('https://ezwallet-server.onrender.com/api/v1/account/sendMoney', {
-        senderId: userData.account._id,
-        receiverId: selectedUser.account,
+        senderId: userData?.account?._id,
+        receiverId: selectedUser?.account,
         amount: Number(amount)
       }, {withCredentials: true});
       dispatch(updateUserTransaction(amount))
@@ -86,7 +106,7 @@ const SendMoneyPortal: React.FC = () => {
                   {users.map((user) => (
                     <div 
                       key={user.username}
-                      onClick={() => setSelectedUser(user)}
+                      onClick={() => setSelectedUser(user as sUserTps)}
                       className={`p-3 hover:bg-gray-100 cursor-pointer flex items-center ${
                         selectedUser?.username === user.username ? 'bg-blue-50' : ''
                       }`}

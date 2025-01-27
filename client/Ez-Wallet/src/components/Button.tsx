@@ -6,10 +6,11 @@ type ButtonProps = {
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
   variant?: 'primary' | 'secondary';
+  children?: React.ReactNode
 };
 
-const Button: React.FC<ButtonProps> = ({ label, onClick, type = 'button', variant = 'primary', className }) => {
-  const baseClasses = 'px-4 py-2 rounded font-semibold';
+const Button: React.FC<ButtonProps> = ({ label, onClick, type = 'button', variant = 'primary', children, className }) => {
+  const baseClasses = 'flex justify-between px-4 py-2 w-[7vw] rounded font-semibold';
   const variantClasses =
     variant === 'primary'
       ? 'bg-blue-600 text-white hover:bg-blue-700'
@@ -21,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({ label, onClick, type = 'button', varian
       onClick={onClick}
       className={`${baseClasses} ${variantClasses} ${className}`}
     >
-      {label}
+      {children} {label}
     </button>
   );
 };

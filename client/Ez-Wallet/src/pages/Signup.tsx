@@ -38,7 +38,7 @@ const Signup = () => {
         <form className="flex flex-col gap-4 w-1/3" onSubmit={handleSubmit(handleSignup)}>
           <div>
             <input type="text" placeholder="Full Name" {...register('fullName', { required: 'Full Name is required' })} className="p-3 border rounded w-full" />
-            {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName.message}</p>}
+            {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName.message as string}</p>}
           </div>
           <div>
             <input
@@ -53,7 +53,7 @@ const Signup = () => {
               })}
               className="p-3 border rounded w-full"
             />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors?.email?.message}</p>}
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors?.email?.message as string}</p>}
           </div>
           <div>
             <input
@@ -68,7 +68,7 @@ const Signup = () => {
               })}
               className="p-3 border rounded w-full"
             />
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message as string}</p>}
           </div>
           <div>
             <input
@@ -79,7 +79,7 @@ const Signup = () => {
               })}
               className="p-3 border rounded w-full"
             />
-            {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.username?.message}</p>}
+            {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.username?.message as string}</p>}
           </div>
           <Button type='submit' label="Register" />
         </form>

@@ -8,7 +8,7 @@ import { login } from '../store/Slice';
 
 const Login = () => {
 
-  const [err, setErr] = useState('')
+  const [err, setErr] = useState<string>('')
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { register, handleSubmit, formState: { errors } } = useForm()
@@ -24,7 +24,8 @@ const Login = () => {
       }
     } catch (error) {
       console.error(error)
-      setErr(err?.message)
+      //@ts-ignore
+      setErr(error?.message)
     }
   }
 
@@ -46,7 +47,7 @@ const Login = () => {
               })}
               className="p-3 border rounded w-full"
             />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors?.email?.message}</p>}
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors?.email?.message as string}</p>}
           </div>
           <div>
             <input
@@ -61,7 +62,7 @@ const Login = () => {
               })}
               className="p-3 border rounded w-full"
             />
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message as string}</p>}
           </div>
           <Button label="Login" type='submit' />
         </form>

@@ -14,12 +14,34 @@ import {addUserTransaction} from "../store/Slice"
 import { RootState } from '../store/store';
 import axios from 'axios';
 
+type trns = {
+  status: 'success' | 'failed' | 'pending',
+  createdAt: Date
+  amount: number,
+  sender:{
+    owner: {
+      username: string
+    }
+  },
+  receiver:{
+    owner: {
+      username: string
+    }
+  }
+}
+
+interface Status {
+  status: 'success' | 'failed' | 'pending'
+}
+
+type trnsRef = trns[]
 
 const Transactions = () => {
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  //@ts-ignore
   const accId = useSelector((state: RootState) => state.userData?.account?._id)
-  const transactionsRef = useRef(null)
+  const transactionsRef = useRef<trnsRef>(null)
   const transactionsData = useSelector((state: RootState) => state.userTransactions)
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -54,7 +76,7 @@ const Transactions = () => {
   //@ts-ignore
   transactionsRef.current = transactionsData
 
-  const StatusBadge = ({status}) => {
+  const StatusBadge = ({status}: Status) => {
     const statusConfig = {
       success: { color: 'bg-green-100 text-green-700', icon: <CheckCircle2 className="w-4 h-4" /> },
       failed: { color: 'bg-red-100 text-red-700', icon: <XCircle className="w-4 h-4" /> },
@@ -149,7 +171,7 @@ const Transactions = () => {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {transactionsRef.current.map((tx, index) => (
-                    <tr 
+                    <tr
                       key={index}
                       className="hover:bg-gray-50 transition-colors cursor-pointer"
                     >
