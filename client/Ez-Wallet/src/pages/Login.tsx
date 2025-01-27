@@ -34,7 +34,7 @@ const Login = () => {
     <div className="flex flex-col h-screen">
       <main className="flex flex-col items-center justify-center flex-grow">
         <h1 className="text-3xl font-bold mb-4">Login</h1>
-        <form className="flex flex-col gap-4 w-1/3" onSubmit={handleSubmit(handleLogin)}>
+        <form className="flex flex-col gap-4 w-1/3 items-center" onSubmit={handleSubmit(handleLogin)}>
         <div>
             <input
               type="email"
@@ -46,7 +46,7 @@ const Login = () => {
                   message: 'Enter a valid email',
                 },
               })}
-              className="p-3 border rounded w-full"
+              className="p-3 border rounded w-[30vw]"
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors?.email?.message as string}</p>}
           </div>
@@ -61,11 +61,11 @@ const Login = () => {
                   message: 'Password must be at least 6 characters',
                 },
               })}
-              className="p-3 border rounded w-full"
+              className="p-3 border rounded w-[30vw]"
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message as string}</p>}
           </div>
-          <Button label="Login" type='submit' />
+          <Button label="Login" type='submit' className='justify-center' />
         </form>
       </main>
     </div>

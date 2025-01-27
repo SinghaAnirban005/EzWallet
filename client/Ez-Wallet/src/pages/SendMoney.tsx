@@ -95,7 +95,7 @@ const SendMoneyPortal: React.FC = () => {
                 <Button 
                   label="Search" 
                   onClick={handleSearch}
-                  className="flex items-center space-x-2"
+                  className="flex items-center justify-between space-x-2"
                 >
                   <Search className="w-4 h-4" />
                 </Button>

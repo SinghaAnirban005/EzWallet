@@ -35,9 +35,9 @@ const Signup = () => {
       <main className="flex flex-col items-center justify-center flex-grow">
         <h1 className="text-3xl font-bold mb-4">Sign Up</h1>
         {err && <p className='text-red-500 text-sm mt-1'>Error :: {err}</p>}
-        <form className="flex flex-col gap-4 w-1/3" onSubmit={handleSubmit(handleSignup)}>
+        <form className="flex flex-col gap-4 w-1/3 items-center" onSubmit={handleSubmit(handleSignup)}>
           <div>
-            <input type="text" placeholder="Full Name" {...register('fullName', { required: 'Full Name is required' })} className="p-3 border rounded w-full" />
+            <input type="text" placeholder="Full Name" {...register('fullName', { required: 'Full Name is required' })} className="p-3 border rounded w-[30vw]" />
             {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName.message as string}</p>}
           </div>
           <div>
@@ -51,7 +51,7 @@ const Signup = () => {
                   message: 'Enter a valid email',
                 },
               })}
-              className="p-3 border rounded w-full"
+              className="p-3 border rounded w-[30vw]"
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors?.email?.message as string}</p>}
           </div>
@@ -66,7 +66,7 @@ const Signup = () => {
                   message: 'Password must be at least 6 characters',
                 },
               })}
-              className="p-3 border rounded w-full"
+              className="p-3 border rounded w-[30vw]"
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message as string}</p>}
           </div>
@@ -77,11 +77,11 @@ const Signup = () => {
               {...register('username', {
                 required: 'Please set a username',
               })}
-              className="p-3 border rounded w-full"
+              className="p-3 border rounded w-[30vw]"
             />
             {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.username?.message as string}</p>}
           </div>
-          <Button type='submit' label="Register" />
+          <Button type='submit' label="Register" className='justify-center' />
         </form>
       </main>
     </div>

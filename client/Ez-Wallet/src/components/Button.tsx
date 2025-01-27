@@ -10,7 +10,7 @@ type ButtonProps = {
 };
 
 const Button: React.FC<ButtonProps> = ({ label, onClick, type = 'button', variant = 'primary', children, className }) => {
-  const baseClasses = 'flex justify-between px-4 py-2 w-[7vw] rounded font-semibold';
+  const baseClasses = 'flex px-4 py-2 w-[7vw] rounded font-semibold';
   const variantClasses =
     variant === 'primary'
       ? 'bg-blue-600 text-white hover:bg-blue-700'
