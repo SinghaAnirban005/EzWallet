@@ -134,11 +134,14 @@ const login = async(req: Request, res: Response) => {
         const options = {
             httpOnly: true,
             secure: true,
+            sameSite: 'none'
         }
 
         res
         .status(200)
+        //@ts-ignore
         .cookie("accessToken", accessToken, options)
+        //@ts-ignore
         .cookie("refreshToken", refreshToken, options)
         .json({
                 user: loggedInUser,
