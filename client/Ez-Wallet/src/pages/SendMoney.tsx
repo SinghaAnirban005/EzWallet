@@ -140,7 +140,6 @@ const SendMoneyPortal: React.FC = () => {
                   />
 
                   <Button 
-                    label="Send Money" 
                     onClick={handleSendMoney}
                     className="w-full flex items-center justify-center space-x-2"
                   >
